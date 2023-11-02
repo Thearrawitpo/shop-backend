@@ -60,6 +60,7 @@ router.delete("/:id", async (req, res, next) => {
 
 router.patch("/:id", async (req, res, next) => {
   try {
+    const id = req.params.id;
     const body = {
       name: req.body.name,
       lat: req.body.lat,
