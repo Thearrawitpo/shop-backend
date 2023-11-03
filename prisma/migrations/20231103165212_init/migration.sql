@@ -29,6 +29,7 @@ CREATE TABLE `Banner` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `image` VARCHAR(255) NOT NULL,
+    `shopId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Banner_id_key`(`id`),
     UNIQUE INDEX `Banner_name_key`(`name`),

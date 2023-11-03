@@ -34,8 +34,9 @@ router.post("/", upload.single("image"), async (req, res, next) => {
   try {
     const image = req.file.filename;
     const name = req.body.name;
+    const shopId = Number(req.body.shopId);
 
-    await createBanner({ name, image });
+    await createBanner({ name, image, shopId });
 
     res.json({
       test: "upload success",

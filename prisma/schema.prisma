@@ -34,6 +34,7 @@ model Banner{
   id          Int   @id @unique @default(autoincrement())
   name String @unique
   image String @db.VarChar(255)
+  shopId Int
 }
 
 model Shop{
