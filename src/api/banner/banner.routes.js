@@ -73,9 +73,11 @@ router.patch("/:id", upload.single("image"), async (req, res, next) => {
     const image = req.file.filename;
     const name = req.body.name;
     const id = req.params.id;
+    const shopId = Number(req.body.shopId);
     const body = {
       name: name,
       image: image,
+      shopId: shopId,
     };
     await updateBannerById(id, body);
 
