@@ -1,8 +1,8 @@
 const express = require("express");
-const emojis = require("./emojis");
 const auth = require("./auth/auth.routes");
 const banner = require("./banner/banner.routes");
 const shop = require("./shop/shop.routes");
+const users = require("./users/users.routes");
 
 const router = express.Router();
 
@@ -12,8 +12,8 @@ router.get("/", (req, res) => {
   });
 });
 
-router.use("/emojis", emojis);
 router.use("/auth", auth);
+router.use("/users", users);
 router.use("/banner", banner);
 router.use("/shop", shop);
 
