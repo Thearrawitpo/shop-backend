@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 function notFound(req, res, next) {
   res.status(404);
   const error = new Error(`🔍 - Not Found - ${req.originalUrl}`);
@@ -28,6 +30,7 @@ function isAuthenticated(req, res, next) {
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     req.payload = payload;
   } catch (err) {
+    console.log(err);
     res.status(401);
     if (err.name === "TokenExpiredError") {
       throw new Error(err.name);

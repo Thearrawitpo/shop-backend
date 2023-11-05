@@ -1,4 +1,5 @@
 const express = require("express");
+const { isAuthenticated } = require("../../middlewares");
 
 const {
   createShop,
@@ -20,7 +21,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", isAuthenticated, async (req, res, next) => {
   try {
     const name = req.body.name;
     const lat = req.body.lat;
@@ -47,7 +48,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isAuthenticated, async (req, res, next) => {
   try {
     const id = req.params.id;
     await deleteShopById(id);
@@ -58,7 +59,7 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", isAuthenticated, async (req, res, next) => {
   try {
     const id = req.params.id;
     const body = {
