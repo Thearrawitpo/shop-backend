@@ -2,7 +2,7 @@ const express = require("express");
 const { generateTokens } = require("../../lib/jwt");
 const { addRefreshTokenToWhitelist } = require("./auth.services");
 const bcrypt = require("bcrypt");
-// const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const {
