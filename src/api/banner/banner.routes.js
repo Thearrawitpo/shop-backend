@@ -33,7 +33,7 @@ router.get("/", async (req, res, next) => {
 
 router.post(
   "/",
-  isAuthenticated,
+  
   upload.single("image"),
   async (req, res, next) => {
     try {
@@ -63,7 +63,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", isAuthenticated, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     await deleteBannerById(id);
@@ -75,8 +75,8 @@ router.delete("/:id", isAuthenticated, async (req, res, next) => {
 });
 
 router.patch(
-  "/:id",
-  isAuthenticated,
+  "/:id"
+,
   upload.single("image"),
   async (req, res, next) => {
     try {

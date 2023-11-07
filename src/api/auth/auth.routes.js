@@ -1,7 +1,13 @@
 const express = require("express");
 const { generateTokens } = require("../../lib/jwt");
-const { addRefreshTokenToWhitelist } = require("./auth.services");
+const {
+  addRefreshTokenToWhitelist,
+  findRefreshTokenById,
+  deleteRefreshToken,
+} = require("./auth.services");
+const { hashToken } = require("../../lib/hashToken");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
@@ -26,8 +32,9 @@ router.post("/register", async (req, res, next) => {
     }
 
     const user = await createUserByEmailAndPassword({ email, password });
-    const { accessToken, refreshToken } = generateTokens(user);
-    await addRefreshTokenToWhitelist({ refreshToken, userId: user.id });
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(user, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
 
     res.json({
       accessToken,
@@ -59,8 +66,10 @@ router.post("/login", async (req, res, next) => {
       throw new Error("Invalid login credentials.");
     }
 
-    const { accessToken, refreshToken } = generateTokens(existingUser);
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(existingUser, jti);
     await addRefreshTokenToWhitelist({
+      jti,
       refreshToken,
       userId: existingUser.id,
     });
@@ -82,7 +91,10 @@ router.post("/refreshToken", async (req, res, next) => {
       throw new Error("Missing refresh token.");
     }
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    console.log(payload);
+
     const savedRefreshToken = await findRefreshTokenById(payload.jti);
+    console.log(savedRefreshToken);
 
     if (!savedRefreshToken || savedRefreshToken.revoked === true) {
       res.status(401);
@@ -102,8 +114,13 @@ router.post("/refreshToken", async (req, res, next) => {
     }
 
     await deleteRefreshToken(savedRefreshToken.id);
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
+    const jti = uuidv4();
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+      user,
+      jti
+    );
     await addRefreshTokenToWhitelist({
+      jti,
       refreshToken: newRefreshToken,
       userId: user.id,
     });

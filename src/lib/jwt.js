@@ -5,11 +5,11 @@ function generateAccessToken(user) {
     expiresIn: "5m",
   });
 }
-function generateRefreshToken(user) {
+function generateRefreshToken(user, jti) {
   return jwt.sign(
     {
       userId: user.id,
-      //   jti,
+      jti,
     },
     process.env.JWT_REFRESH_SECRET,
     {
@@ -18,9 +18,9 @@ function generateRefreshToken(user) {
   );
 }
 
-function generateTokens(user) {
+function generateTokens(user, jti) {
   const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
+  const refreshToken = generateRefreshToken(user, jti);
 
   return {
     accessToken,

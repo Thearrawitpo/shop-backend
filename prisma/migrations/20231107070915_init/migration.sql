@@ -13,7 +13,7 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `RefreshToken` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `hashedToken` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
     `revoked` BOOLEAN NOT NULL DEFAULT false,
